@@ -1,0 +1,27 @@
+{
+  "name": "movies-explorer-api",
+  "version": "8.13.1",
+  "description": "",
+  "main": "app.js",
+  "mode": "development",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "lint": "npx eslint ."
+  },
+  "author": "Katya Topchieva",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.20",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.11.1"
+  },
+  "dependencies": {
+    "Babel": "^0.0.1",
+    "eslint": "^8.25.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "express": "^4.18.2"
+  }
+}
