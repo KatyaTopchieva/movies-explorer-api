@@ -16,13 +16,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
   },
   year: {
-    type: Number,
-    validate: {
-      validator(v) {
-        return v >= 1895 && v <= Date.now().getFullYear();
-      },
-      message: 'Дата выхода фильма введена неверно.',
-    },
+    type: String,
     required: true,
   },
   description: {
