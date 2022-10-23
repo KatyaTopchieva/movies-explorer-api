@@ -1,7 +1,6 @@
 const Movie = require('../models/movie');
 const { isCastError, isValidationError } = require('../utils/error-handler');
 const NotFound = require('../errors/not-found');
-const Forbidden = require('../errors/forbidden-error');
 const BadRequest = require('../errors/bad-request');
 
 module.exports.getMovies = (req, res, next) => {
@@ -49,4 +48,21 @@ module.exports.createMovie = (req, res, next) => {
     });
 };
 
-
+module.exports.deleteMovie = (req, res, next) => {
+  const { movieId } = req.params;
+  Movie.findById(movieId)
+    .then((movie) => {
+      if (!movie) {
+        throw new NotFound('Такого фильма не существует');
+      }
+      return Movie.findByIdAndRemove(movieId);
+    })
+    .then((movie) => res.send({ data: movie }))
+    .catch((err) => {
+      if (isCastError(res, err)) {
+        next(new BadRequest(err.message));
+      } else {
+        next(err);
+      }
+    });
+};
