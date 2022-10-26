@@ -64,7 +64,7 @@ module.exports.createUser = (req, res, next) => {
 
 module.exports.updateProfile = (req, res, next) => {
   const { name } = req.body;
-  User.findByIdAndUpdate(req.user._id, { name }, {
+  User.findUserByCredentials(req.user._id, { name }, {
     new: true,
     runValidators: true,
   })
