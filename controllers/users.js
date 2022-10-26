@@ -64,7 +64,7 @@ module.exports.createUser = (req, res, next) => {
 
 module.exports.updateProfile = (req, res, next) => {
   const { name } = req.body;
-  User.findUserByCredentials(req.user._id, { name }, {
+  User.findByIdAndUpdate(req.user._id, { name }, {
     new: true,
     runValidators: true,
   })
@@ -74,7 +74,13 @@ module.exports.updateProfile = (req, res, next) => {
       }
       res.send(getSimpleUser(user));
     })
-    .catch(next);
+    .catch((err) => {
+      if (isValidationError(res, err)) {
+        next(new BadRequest(err.message));
+      } else {
+        next(err);
+      }
+    });
 };
 
 module.exports.login = (req, res, next) => {
