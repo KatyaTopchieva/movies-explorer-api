@@ -13,6 +13,7 @@ const { signUp, signIn } = require('./utils/validations');
 const auth = require('./middlewares/auth');
 
 const { requestLogger, errorLogger } = require('./middlewares/Logger');
+const cors = require('./middlewares/cors');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -20,6 +21,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(cors);
 app.use(requestLogger);
 app.use(express.json());
 
