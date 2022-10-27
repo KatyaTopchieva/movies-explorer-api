@@ -1,13 +1,13 @@
-## movies-explorer-api
+# movies-explorer-api
 В данном проекте был сделан backend проекта Movies.
 
-# Технологии:
+## Технологии:
 Express.  
 MongoDB.  
 Node.js.  
 Mongoose.
 
-# Запуск проекта
+## Запуск проекта
 npm run start — запускает сервер  
 npm run dev — запускает сервер с hot-reload
 
