@@ -12,6 +12,7 @@ const { createUser, login } = require('./controllers/users');
 const { signUp, signIn } = require('./utils/validations');
 const auth = require('./middlewares/auth');
 
+const mainErrorHandler = require('./middlewares/main-error-handler');
 const { requestLogger, errorLogger } = require('./middlewares/Logger');
 const cors = require('./middlewares/cors');
 
@@ -40,6 +41,7 @@ mongoose.connect('mongodb://localhost:27017/moviesdb', {
 });
 
 app.use(errors());
+app.use(mainErrorHandler);
 
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
