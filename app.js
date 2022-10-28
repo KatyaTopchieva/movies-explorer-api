@@ -3,7 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
-
+const helmet = require('helmet');
 const users = require('./routes/users');
 const movies = require('./routes/movies');
 const pathNotFound = require('./routes/not-found');
@@ -15,13 +15,17 @@ const auth = require('./middlewares/auth');
 const mainErrorHandler = require('./middlewares/main-error-handler');
 const { requestLogger, errorLogger } = require('./middlewares/Logger');
 const cors = require('./middlewares/cors');
+const rateLimiter = require('./middlewares/rateLimiter');
 
 const { PORT = 3000 } = process.env;
 const app = express();
 
+app.use(rateLimiter);
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(helmet());
 app.use(cors);
 app.use(requestLogger);
 app.use(express.json());
