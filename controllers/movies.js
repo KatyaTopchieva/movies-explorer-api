@@ -41,7 +41,7 @@ module.exports.createMovie = (req, res, next) => {
     .then((movie) => res.send({ data: movie }))
     .catch((err) => {
       if (isValidationError(res, err)) {
-        next(new BadRequest(err.message));
+        next(new BadRequest('Неверные данные'));
       } else {
         next(err);
       }
@@ -60,7 +60,7 @@ module.exports.deleteMovie = (req, res, next) => {
     .then((movie) => res.send({ data: movie }))
     .catch((err) => {
       if (isCastError(res, err)) {
-        next(new BadRequest(err.message));
+        next(new BadRequest('Неверные данные'));
       } else {
         next(err);
       }

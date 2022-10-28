@@ -5,7 +5,6 @@ const User = require('../models/user');
 const NotFound = require('../errors/not-found');
 const BadRequest = require('../errors/bad-request');
 const ConflictError = require('../errors/conflict-error');
-const UnauthorizedError = require('../errors/unauthorized-error');
 const { isCastError, isValidationError } = require('../utils/error-handler');
 
 module.exports.getUsers = (req, res, next) => {
@@ -24,7 +23,7 @@ module.exports.getUserId = (req, res, next) => {
     })
     .catch((err) => {
       if (isCastError(res, err)) {
-        next(new BadRequest(err.message));
+        next(new BadRequest('Неверные данные'));
       } else {
         next(err);
       }
@@ -55,7 +54,7 @@ module.exports.createUser = (req, res, next) => {
     .then((user) => res.status(201).send(getSimpleUser(user)))
     .catch((err) => {
       if (isValidationError(res, err)) {
-        next(new BadRequest(err.message));
+        next(new BadRequest('Неверные данные'));
       } else {
         next(err);
       }
@@ -63,8 +62,8 @@ module.exports.createUser = (req, res, next) => {
 };
 
 module.exports.updateProfile = (req, res, next) => {
-  const { name } = req.body;
-  User.findByIdAndUpdate(req.user._id, { name }, {
+  const { email, name } = req.body;
+  User.findByIdAndUpdate(req.user._id, { email, name }, {
     new: true,
     runValidators: true,
   })
@@ -76,7 +75,10 @@ module.exports.updateProfile = (req, res, next) => {
     })
     .catch((err) => {
       if (isValidationError(res, err)) {
-        next(new BadRequest(err.message));
+        next(new BadRequest('Неверные данные'));
+      }
+      if (err.code === 11000) {
+        next(new ConflictError(`Пользователь с ${email} уже существует.`));
       } else {
         next(err);
       }
@@ -93,7 +95,7 @@ module.exports.login = (req, res, next) => {
       const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', { expiresIn: '7d' });
       res.send({ token });
     })
-    .catch(() => next(new UnauthorizedError('Неправильные почта или пароль')));
+    .catch(next);
 };
 
 module.exports.getCurrentUser = (req, res, next) => {

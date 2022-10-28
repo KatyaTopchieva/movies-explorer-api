@@ -11,6 +11,6 @@ Mongoose.
 npm run start — запускает сервер  
 npm run dev — запускает сервер с hot-reload
 
-Ссылка на Backend проекта: https://api.etopchievadp.students.nomoredomains.sbs
+Ссылка на Backend проекта: https://etopchievadip.students.nomoredomains.icu
 
 Публичный IP-адрес сервера: 178.154.231.132
