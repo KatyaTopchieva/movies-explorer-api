@@ -17,12 +17,6 @@ const signUp = celebrate({
   }),
 });
 
-const userIdValidation = celebrate({
-  params: Joi.object().keys({
-    userId: Joi.string().required().length(24).hex(),
-  }),
-});
-
 const updateProfileValidation = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
@@ -70,7 +64,6 @@ const movieIdValidation = celebrate({
 module.exports = {
   signIn,
   signUp,
-  userIdValidation,
   updateProfileValidation,
   createMovieValidation,
   movieIdValidation,

@@ -15,9 +15,13 @@ const auth = require('./middlewares/auth');
 const mainErrorHandler = require('./middlewares/main-error-handler');
 const { requestLogger, errorLogger } = require('./middlewares/Logger');
 const cors = require('./middlewares/cors');
+const {
+  MONGO_DB_ADDRESS,
+  PORT_NUMBER,
+} = require('./utils/constants');
 const rateLimiter = require('./middlewares/rateLimiter');
 
-const { PORT = 3000 } = process.env;
+const { PORT = PORT_NUMBER } = process.env;
 const app = express();
 
 app.use(rateLimiter);
@@ -40,7 +44,7 @@ app.use(pathNotFound);
 
 app.use(errorLogger);
 
-mongoose.connect('mongodb://localhost:27017/moviesdb', {
+mongoose.connect(MONGO_DB_ADDRESS, {
   useNewUrlParser: true,
 });
 

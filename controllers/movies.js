@@ -1,5 +1,4 @@
 const Movie = require('../models/movie');
-const { isCastError, isValidationError } = require('../utils/error-handler');
 const NotFound = require('../errors/not-found');
 const BadRequest = require('../errors/bad-request');
 
@@ -15,7 +14,7 @@ module.exports.createMovie = (req, res, next) => {
   Movie.create({ owner, ...req.body })
     .then((movie) => res.send({ data: movie }))
     .catch((err) => {
-      if (isValidationError(res, err)) {
+      if (err.name === 'ValidationError') {
         next(new BadRequest('Неверные данные'));
       } else {
         next(err);
@@ -34,7 +33,7 @@ module.exports.deleteMovie = (req, res, next) => {
     })
     .then((movie) => res.send({ data: movie }))
     .catch((err) => {
-      if (isCastError(res, err)) {
+      if (err.name === 'CastError') {
         next(new BadRequest('Неверные данные'));
       } else {
         next(err);

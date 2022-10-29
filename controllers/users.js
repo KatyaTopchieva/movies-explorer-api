@@ -5,30 +5,6 @@ const User = require('../models/user');
 const NotFound = require('../errors/not-found');
 const BadRequest = require('../errors/bad-request');
 const ConflictError = require('../errors/conflict-error');
-const { isCastError, isValidationError } = require('../utils/error-handler');
-
-module.exports.getUsers = (req, res, next) => {
-  User.find({})
-    .then((users) => res.send(users))
-    .catch(next);
-};
-
-module.exports.getUserId = (req, res, next) => {
-  User.findById(req.params.userId)
-    .then((user) => {
-      if (!user) {
-        throw new NotFound('Пользователь не найден');
-      }
-      res.status(200).send({ data: user });
-    })
-    .catch((err) => {
-      if (isCastError(res, err)) {
-        next(new BadRequest('Неверные данные'));
-      } else {
-        next(err);
-      }
-    });
-};
 
 const getSimpleUser = (user) => ({
   data:
@@ -53,7 +29,7 @@ module.exports.createUser = (req, res, next) => {
     }))
     .then((user) => res.status(201).send(getSimpleUser(user)))
     .catch((err) => {
-      if (isValidationError(res, err)) {
+      if (err.name === 'ValidationError') {
         next(new BadRequest('Неверные данные'));
       } else {
         next(err);
@@ -74,7 +50,7 @@ module.exports.updateProfile = (req, res, next) => {
       res.send(getSimpleUser(user));
     })
     .catch((err) => {
-      if (isValidationError(res, err)) {
+      if (err.name === 'ValidationError') {
         next(new BadRequest('Неверные данные'));
       }
       if (err.code === 11000) {
@@ -87,9 +63,6 @@ module.exports.updateProfile = (req, res, next) => {
 
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
-  if (!email || !password) {
-    throw new BadRequest('Переданы некорректные данные');
-  }
   return User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', { expiresIn: '7d' });
@@ -104,7 +77,6 @@ module.exports.getCurrentUser = (req, res, next) => {
     if (!user) {
       return next(new NotFound('Пользователь не найден.'));
     }
-
     return res.status(200).send(user);
   }).catch(next);
 };
