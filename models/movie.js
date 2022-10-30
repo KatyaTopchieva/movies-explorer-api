@@ -1,6 +1,6 @@
-/* eslint linebreak-style: 0 */
 const mongoose = require('mongoose');
 const validator = require('validator');
+const { INVALID_URL } = require('../utils/constants');
 
 const movieSchema = new mongoose.Schema({
   country: {
@@ -27,7 +27,7 @@ const movieSchema = new mongoose.Schema({
     type: String,
     validate: {
       validator: (link) => validator.isURL(link),
-      message: 'Ссылка не соответствует необходимому формату.',
+      message: INVALID_URL,
     },
     required: true,
   },
@@ -35,7 +35,7 @@ const movieSchema = new mongoose.Schema({
     type: String,
     validate: {
       validator: (link) => validator.isURL(link),
-      message: 'Ссылка не соответствует необходимому формату.',
+      message: INVALID_URL,
     },
     required: true,
   },
@@ -43,7 +43,7 @@ const movieSchema = new mongoose.Schema({
     type: String,
     validate: {
       validator: (link) => validator.isURL(link),
-      message: 'Ссылка не соответствует необходимому формату.',
+      message: INVALID_URL,
     },
     required: true,
   },

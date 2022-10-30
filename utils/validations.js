@@ -2,6 +2,8 @@ const { celebrate, Joi } = require('celebrate');
 const validator = require('validator');
 const BadRequest = require('../errors/bad-request');
 
+const { INVALID_URL } = require('./constants');
+
 const signIn = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
@@ -33,19 +35,19 @@ const createMovieValidation = celebrate({
     description: Joi.string().required(),
     image: Joi.string().required().custom((value) => {
       if (!validator.isURL(value, { require_protocol: true })) {
-        throw new BadRequest('Неверный формат URL адреса');
+        throw new BadRequest(INVALID_URL);
       }
       return value;
     }),
     trailerLink: Joi.string().required().custom((value) => {
       if (!validator.isURL(value, { require_protocol: true })) {
-        throw new BadRequest('Неверный формат URL адреса');
+        throw new BadRequest(INVALID_URL);
       }
       return value;
     }),
     thumbnail: Joi.string().required().custom((value) => {
       if (!validator.isURL(value, { require_protocol: true })) {
-        throw new BadRequest('Неверный формат URL адреса');
+        throw new BadRequest(INVALID_URL);
       }
       return value;
     }),

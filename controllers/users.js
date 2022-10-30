@@ -6,6 +6,13 @@ const NotFound = require('../errors/not-found');
 const BadRequest = require('../errors/bad-request');
 const ConflictError = require('../errors/conflict-error');
 
+const {
+  BAD_REQUEST,
+  CONFLICT_ERROR,
+  NOT_FOUND,
+  VALIDATION_ERROR,
+} = require('../utils/constants');
+
 const getSimpleUser = (user) => ({
   data:
     {
@@ -18,7 +25,7 @@ module.exports.createUser = (req, res, next) => {
   const { email } = req.body;
   User.findOne({ email }).then((user) => {
     if (user) {
-      throw new ConflictError(`Пользователь с ${email} уже существует.`);
+      throw new ConflictError(CONFLICT_ERROR);
     }
     return bcrypt.hash(req.body.password, 10);
   })
@@ -29,8 +36,8 @@ module.exports.createUser = (req, res, next) => {
     }))
     .then((user) => res.status(201).send(getSimpleUser(user)))
     .catch((err) => {
-      if (err.name === 'ValidationError') {
-        next(new BadRequest('Неверные данные'));
+      if (err.name === VALIDATION_ERROR) {
+        next(new BadRequest(BAD_REQUEST));
       } else {
         next(err);
       }
@@ -46,16 +53,16 @@ module.exports.updateProfile = (req, res, next) => {
   })
     .then((user) => {
       if (!user) {
-        throw new NotFound('Пользователь не найден');
+        throw new NotFound(NOT_FOUND);
       }
       res.send(getSimpleUser(user));
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
-        next(new BadRequest('Неверные данные'));
+      if (err.name === VALIDATION_ERROR) {
+        next(new BadRequest(BAD_REQUEST));
       }
       if (err.code === 11000) {
-        next(new ConflictError(`Пользователь с ${email} уже существует.`));
+        next(new ConflictError(CONFLICT_ERROR));
       } else {
         next(err);
       }
@@ -76,7 +83,7 @@ module.exports.getCurrentUser = (req, res, next) => {
   const { _id } = req.user;
   User.findById(_id).then((user) => {
     if (!user) {
-      return next(new NotFound('Пользователь не найден.'));
+      return next(new NotFound(NOT_FOUND));
     }
     return res.status(200).send(user);
   }).catch(next);
