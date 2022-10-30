@@ -37,7 +37,7 @@ const createMovieValidation = celebrate({
       }
       return value;
     }),
-    trailerlink: Joi.string().required().custom((value) => {
+    trailerLink: Joi.string().required().custom((value) => {
       if (!validator.isURL(value, { require_protocol: true })) {
         throw new BadRequest('Неверный формат URL адреса');
       }
