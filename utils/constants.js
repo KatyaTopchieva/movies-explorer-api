@@ -12,6 +12,8 @@ const CAST_ERROR = 'CastError';
 const NOT_AUTH_ERROR = 'Необходима авторизация';
 const NOT_AUTH_ERROR_WRONG_EMAIL_PASSWORD = 'Неправильные почта или пароль';
 
+const MONGO_DB_ADDRESS_DEV = 'mongodb://localhost:27017/moviesdb';
+
 module.exports = {
   PORT_NUMBER,
   BAD_REQUEST,
@@ -25,4 +27,5 @@ module.exports = {
   CAST_ERROR,
   NOT_AUTH_ERROR,
   NOT_AUTH_ERROR_WRONG_EMAIL_PASSWORD,
+  MONGO_DB_ADDRESS_DEV,
 };

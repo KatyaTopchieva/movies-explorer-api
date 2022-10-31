@@ -14,27 +14,28 @@ const {
 const rateLimiter = require('./middlewares/rateLimiter');
 const indexRouter = require('./routes');
 
-const { PORT = PORT_NUMBER, MONGO_DB_ADDRESS } = process.env;
+const { MONGO_DB_ADDRESS, NODE_ENV } = process.env;
+const { MONGO_DB_ADDRESS_DEV } = require('./utils/constants');
+
 const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(helmet());
 app.use(cors);
 app.use(requestLogger);
-app.use(express.json());
-
-app.use(indexRouter);
-
-app.use(errorLogger);
 app.use(rateLimiter);
+app.use(helmet());
 
-mongoose.connect(MONGO_DB_ADDRESS, {
+app.use(express.json());
+app.use(indexRouter);
+app.use(errorLogger);
+
+mongoose.connect(NODE_ENV === 'production' ? MONGO_DB_ADDRESS : MONGO_DB_ADDRESS_DEV, {
   useNewUrlParser: true,
 });
 
 app.use(errors());
 app.use(mainErrorHandler);
 
-app.listen(PORT);
+app.listen(PORT_NUMBER);
