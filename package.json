@@ -12,16 +12,24 @@
   "author": "Katya Topchieva",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^2.0.20",
-    "webpack": "^5.74.0",
-    "webpack-cli": "^4.10.0",
-    "webpack-dev-server": "^4.11.1"
+    "nodemon": "^2.0.20"
   },
   "dependencies": {
-    "Babel": "^0.0.1",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.1",
+    "celebrate": "^15.0.1",
+    "dotenv": "^16.0.3",
     "eslint": "^8.25.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "express-joi-validation": "^5.0.1",
+    "express-rate-limit": "^6.6.0",
+    "express-winston": "^4.2.0",
+    "helmet": "^6.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.6.6",
+    "validator": "^13.7.0",
+    "winston": "^3.8.2"
   }
 }
